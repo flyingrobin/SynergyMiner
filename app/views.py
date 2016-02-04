@@ -12,7 +12,7 @@ from plot_bubble import plot_bubble
 @app.route('/')
 @app.route('/index')
 def index():
-    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
+    mydb = pymysql.connect(host='localhost',user='root',password='wxx',db='Insight')
 
     query="SELECT * FROM Insight.CELL_LINE_INFO;"
     with mydb:
@@ -42,7 +42,7 @@ def smile_input():
 @app.route('/output')
 def synergize_output():
     cell_line_nm = request.args.get("lname")
-    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
+    mydb = pymysql.connect(host='localhost',user='root',password='wxx',db='Insight')
 
     query="SELECT * FROM Insight.Prediction;"
     with mydb:
