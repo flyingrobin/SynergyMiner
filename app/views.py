@@ -1,21 +1,12 @@
 __author__ = 'liwang'
 
-import base64
-import numpy
-from flask import Flask, render_template, request, make_response, send_file
-from app import app
-from get_drug_list import get_drug_list
-from plot_bubble import plot_bubble
 import pandas as pd
 import pymysql
-import re
-import StringIO
-import matplotlib
-import matplotlib.pyplot as plt
+from flask import render_template, request
 
-
-from matplotlib.figure import Figure
-#app = Flask(__name__)
+from SynergyMiner.app import app
+from get_drug_list import get_drug_list
+from plot_bubble import plot_bubble
 
 
 @app.route('/')
