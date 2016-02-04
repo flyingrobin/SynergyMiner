@@ -1,10 +1,10 @@
 __author__ = 'liwang'
 
+from app import app
 import pandas as pd
 import pymysql
 from flask import render_template, request
 
-from SynergyMiner.app import app
 from get_drug_list import get_drug_list
 from plot_bubble import plot_bubble
 
