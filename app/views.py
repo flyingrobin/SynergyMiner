@@ -3,16 +3,17 @@ __author__ = 'liwang'
 from app import app
 import pandas as pd
 import pymysql
+#app = Flask(__name__)
 from flask import render_template, request
 
 from get_drug_list import get_drug_list
-from plot_bubble import plot_bubble
+from plot_result import plot_result
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    mydb = pymysql.connect(host='localhost',user='root',password='wxx',db='Insight')
+    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
 
     query="SELECT * FROM Insight.CELL_LINE_INFO;"
     with mydb:
@@ -42,7 +43,7 @@ def smile_input():
 @app.route('/output')
 def synergize_output():
     cell_line_nm = request.args.get("lname")
-    mydb = pymysql.connect(host='localhost',user='root',password='wxx',db='Insight')
+    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
 
     query="SELECT * FROM Insight.Prediction;"
     with mydb:
@@ -60,7 +61,7 @@ def synergize_output():
     df_drug=pd.DataFrame(list(query_results2),columns=['idx','DrugID','Target_genes'])
     df_match=df_pred.loc[df_pred['cell_line_name']==cell_line_nm,:]
 
-    plotdiv=plot_bubble(df_match,df_drug,cell_line_nm)
+    plotdiv=plot_result(df_match,df_drug,cell_line_nm)
     return render_template("output.html", plot=plotdiv)
 
 
