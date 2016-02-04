@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Demo 7: Build Menu After Page Load</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="../../../static/css/page.css" rel="stylesheet" />
+    <link href="../skins/default/accordion-menu.css" rel="stylesheet" />
+    <script src="accordion-menu.js"></script>
+    <script type="text/javascript">
+        function initMenu(filter) {
+            amenu.clear();
+            $('#accordion').load('amenu.txt ' + filter, function () { amenu.init(); });
+        }
+
+        //don't copy the below script into your page.
+        if (!document.domain) alert("The Ajax will not work if opening the page by local path instead of through HTTP on a web or localhost server");
+    </script>
+</head>
+<body>
+    <header style="white-space:nowrap;">
+        <a class="logo" href="http://www.menucool.com/">Menucool</a>
+        <span id="top-nav">
+            <a href="../demo1/demo.html">DEMO 1</a>
+            <a href="../demo2/demo.html">DEMO 2</a>
+            <a href="../demo3/demo.html">DEMO 3</a>
+            <a href="../demo4/demo.html">DEMO 4</a>
+            <a href="../demo5/demo.html">DEMO 5</a>
+            <a href="../demo6/demo.html">DEMO 6</a>
+            <a href="../demo7/demo.html" class="active">DEMO 7</a>
+        </span>
+    </header>  
+    <div style="width:600px;margin:0 auto;">
+        <h1>Demo 7: Build Menu After Page Load</h1>
+        <p>&nbsp;</p>
+        <div style="width:300px;">
+            <div id="accordion"></div>
+        </div>        
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <div>
+            <input type="button" value="Create Menu 1" onclick="initMenu('#div1')" /> &nbsp; &nbsp;
+            <input type="button" value="Create Menu 2" onclick="initMenu('#div2')" />
+        </div>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>
+            <a href="http://www.menucool.com/vertical/accordion-menu">Menucool Accordion Menu</a> has a built-in function, <em class="cn">init([id])</em>, that can be used to init the menu
+            after page load if the menu markup is not available during page load.
+        </p>
+        <p>This demo provides an example of creating the accordion menu dynamically through a jQuery Ajax request.</p>
+        <p>
+            Clicking on the buttons above will trigger a jQuery Ajax request to retrieve the menu markup. The callback function
+            of the Ajax will populate the menu HTML, and then <em>amenu.init()</em> is called to initiate the menu.
+        </p>
+        <p>For details please visit <a href="http://www.menucool.com/vertical/build-menu-after-page-load">Build Menu After Page Load</a></p>
+        <div style="height:80px;"></div>
+    </div>
+</body>
+</html>
