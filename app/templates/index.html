@@ -9,12 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--<link href="../static/css/page.css" rel="stylesheet" />-->
     <link href="../static/css/accordion-menu.css" rel="stylesheet" />
     <script src="../static/js/accordion-menu.js"></script>
-    <!--<script src="../static/js/jquery-1.12.0.min.js"></script>-->
-    <!--<script src="../static/js/jquery-migrate-1.2.1.min.js"></script>-->
-    <!--<script src="../static/js/jquery-ui.js"></script>-->
+
     <title>SynergyMiner: Find better drug combinations to treat cancer</title>
 
     <!-- Bootstrap Core CSS -->
@@ -58,10 +55,7 @@
                         <a href="#about">About</a>
                     </li>
                     <li>
-                        <a href="#contact">Slides</a>
-                    </li>
-                    <li>
-                        <a href="#contact">Contact</a>
+                        <a href="contact">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -82,45 +76,29 @@
                         <h1>SynergyMiner</h1>
                         <h3>Find better drug combinations to treat cancer</h3>
                         <hr class="intro-divider">
-                        <h4 style="text-align:left; margin-left: 110pt">Select tissue origin of the cancer:</h4>
+                        <h4 style="text-align:left; margin-left: 150pt">Select tissue origin of the cancer:</h4>
                         <ul class="list-inline intro-social-buttons">
                                    <div class="btn-group">
                                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Breast <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu">
-                                        <li><a href="#">Explore drug synergy</a></li>
-                                        <li role="separator" class="divider"></li>
                                         <li><a href="#cell_line">Select a cell line</a></li>
                                       </ul>
                                     </div>
                                     <div class="btn-group">
                                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Lung <span class="caret"></span>
+                                        Prostate <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu">
-                                        <li><a href="#">Explore drug synergy</a></li>
-                                        <li role="separator" class="divider"></li>
                                         <li><a href="#cell_line">Select a cell line</a></li>
                                       </ul>
                                     </div>
                                     <div class="btn-group">
                                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Colon <span class="caret"></span>
+                                        Blood System <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu">
-                                        <li><a href="#">Explore drug synergy</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#cell_line">Select a cell line</a></li>
-                                      </ul>
-                                    </div>
-                                    <div class="btn-group">
-                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Bladder <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu">
-                                        <li><a href="#">Explore drug synergy</a></li>
-                                        <li role="separator" class="divider"></li>
                                         <li><a href="#cell_line">Select a cell line</a></li>
                                       </ul>
                                     </div>
@@ -129,19 +107,40 @@
                                         Skin <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu">
-                                        <li><a href="#">Explore drug synergy</a></li>
-                                        <li role="separator" class="divider"></li>
+                                        <li><a href="#cell_line">Select a cell line</a></li>
+                                      </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Bladder <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
                                         <li><a href="#cell_line">Select a cell line</a></li>
                                       </ul>
                                     </div>
 
                                     <div class="btn-group">
                                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Blood and Lymphoid System <span class="caret"></span>
+                                        Lung <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu">
-                                        <li><a href="#">Explore drug synergy</a></li>
-                                        <li role="separator" class="divider"></li>
+                                        <li><a href="#cell_line">Select a cell line</a></li>
+                                      </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Colon <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a href="#cell_line">Select a cell line</a></li>
+                                      </ul>
+                                    </div>
+
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Stomach <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
                                         <li><a href="#cell_line">Select a cell line</a></li>
                                       </ul>
                                     </div>
@@ -175,7 +174,7 @@
                 <li> <div>{{tissue}}</div><ul>
                 {% for subtype, cell_list in subtypes.items() %}
                     {% if cell_list[0] %}
-                    <li> <div>{{subtype}}</div><ul>
+                    <li> <div id="test">{{subtype}}</div><ul>
                     {% for cell in cell_list %}
                         <li type="square">
                             <div>
@@ -210,15 +209,11 @@
                 <div class="col-lg-12">
                     <ul class="list-inline">
                         <li>
-                            <a href="#">Home</a>
+                            <a href="#intro-header">Home</a>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
                             <a href="#about">About</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#services">Services</a>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
@@ -243,18 +238,16 @@
 
             <div class="row">
                 <div class="col-lg-6">
-                    <h2>Connect to Start Bootstrap:</h2>
+
                 </div>
                 <div class="col-lg-6">
                     <ul class="list-inline banner-social-buttons">
+
                         <li>
-                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                            <a href="https://github.com/flyingrobin/SynergyMiner" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
                         </li>
                         <li>
-                            <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                        </li>
-                        <li>
-                            <a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
+                            <a href="https://www.linkedin.com/in/liwangomics" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
                         </li>
                     </ul>
                 </div>

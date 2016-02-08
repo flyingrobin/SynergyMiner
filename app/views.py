@@ -13,7 +13,7 @@ from plot_result import plot_result
 @app.route('/')
 @app.route('/index')
 def index():
-    mydb = pymysql.connect(host='localhost',user='root',password='wxx',db='Insight')
+    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
 
     query="SELECT * FROM Insight.CELL_LINE_INFO;"
     with mydb:
@@ -43,7 +43,7 @@ def smile_input():
 @app.route('/output')
 def synergize_output():
     cell_line_nm = request.args.get("lname")
-    mydb = pymysql.connect(host='localhost',user='root',password='wxx',db='Insight')
+    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
 
     query="SELECT * FROM Insight.Prediction;"
     with mydb:
@@ -63,6 +63,11 @@ def synergize_output():
 
     plotdiv=plot_result(df_match,df_drug,cell_line_nm)
     return render_template("output.html", plot=plotdiv)
+
+
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
 
 
 @app.route('/error')
