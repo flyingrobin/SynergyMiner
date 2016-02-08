@@ -65,6 +65,11 @@ def synergize_output():
     return render_template("output.html", plot=plotdiv)
 
 
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
+
+
 @app.route('/error')
 def error_output():
     return render_template("error.html")
