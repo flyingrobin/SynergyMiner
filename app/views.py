@@ -52,13 +52,13 @@ def synergize_output():
         query_results = cur.fetchall()
     df_pred=pd.DataFrame(list(query_results),columns=['idx','cell_line_name','Combination_ID','Prob'])
 
-    query="SELECT * FROM Insight.Drug_info;"
+    query="SELECT ChallengeName,Target_annotated FROM Insight.Drug_info;"
 
     with mydb:
         cur = mydb.cursor()
         cur.execute(query)
         query_results2 = cur.fetchall()
-    df_drug=pd.DataFrame(list(query_results2),columns=['idx','DrugID','Target_genes'])
+    df_drug=pd.DataFrame(list(query_results2),columns=['DrugID','Target_genes'])
     df_match=df_pred.loc[df_pred['cell_line_name']==cell_line_nm,:]
 
     plotdiv=plot_result(df_match,df_drug,cell_line_nm)

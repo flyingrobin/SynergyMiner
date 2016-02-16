@@ -4,20 +4,11 @@ import pandas as pd
 import numpy as np
 import pymysql
 import re
+import networkx as nx
 from collections import defaultdict
 
 
 # get drug target list
-def drugTargets(df_drug_list):
-    # get a list of all drug targets
-    target_dict=drugTargets_dict(df_drug_list)
-
-    # the values of target_dict is a list of lists, and we want to flatten it
-    target_list=[item for sublist in target_dict.values() for item in sublist]
-
-    # return a list that contains only unique values
-    return list(set(target_list))
-
 def drugTargets_dict(df_drug_list):
     # get a dictionary in which the key is the drug name and the value is a list of target genes
     target_dict=dict()
@@ -189,21 +180,24 @@ def makePPIdata(in_network_list,df_drug_list,G):
 
     return (x_feat1,x_feat2)
 
-if __name__=="__main__":
-    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
-    def queryFromSQL(query,mydb,colnames):
+def tabFromSQL(mydb,table):
+        query_colname="SELECT Column_name from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='"+table+"';"
+        query_tab="SELECT * FROM Insight."+table+";"
         with mydb:
             cur = mydb.cursor()
-            cur.execute(query)
+            cur.execute(query_colname)
+            colnames=[i[0] for i in cur.fetchall()]
+
+            cur.execute(query_tab)
             query_results = cur.fetchall()
         return pd.DataFrame(list(query_results),columns=colnames)
 
-     # Read PPI data from MySQL database
-    query1="SELECT * FROM Insight.PPI_all;"
-    df_PPI_all=queryFromSQL(query1,mydb,['ProteinA','ProteinB'])
+if __name__=="__main__":
+    mydb = pymysql.connect(host='localhost',user='root',password='',db='Insight')
 
-    query2="SELECT * FROM Insight.PPI_IDmap;"
-    df_PPI_map=queryFromSQL(query2,mydb,['From','To'])
+    # Read PPI data from MySQL database
+    df_PPI_all=tabFromSQL(mydb,'PPI_all')
+    df_PPI_map=tabFromSQL(mydb,'PPI_IDmap')
 
     # Create mapping dictionary, there are 41 Ids that map to multiple gene names so we can ignore them
     # For multi-mapping IDs, we take the last entry
@@ -212,22 +206,37 @@ if __name__=="__main__":
         uniprot2gene[row['From']]= row['To']
 
     # Read KEGG table from MySQL database
-    query3="SELECT * FROM Insight.KEGG_pathway;"
-    df_KEGG=queryFromSQL(query3,mydb,colnames)
+    df_KEGG=tabFromSQL(mydb,'KEGG_pathway')
 
+    # Combine all kepp pathway nodes
+    kegg_nodes=[item for sub in [df_KEGG[col] for col in df_KEGG.columns] for item in sub]
+    kegg_nodes=list(set(kegg_nodes))
 
-    # TODO: parse KEGG dataframe to gene list
-    more_nodes=[]
-    for pathway in kegg_sup_nodes.keys():
-        more_nodes.extend(list(kegg_sup_nodes[pathway]))
-    more_nodes=list(set(more_nodes))
+    # read Drug info data from MySQL database
+    df_drug_list=tabFromSQL(mydb,'Drug_info')
 
     # Build PPI network graph
     G=nx.Graph()
     for index, row in df_PPI_all.iterrows():
-
         if row.ProteinA in uniprot2gene and row.ProteinB in uniprot2gene:
             G.add_edge(uniprot2gene[row.ProteinA],uniprot2gene[row.ProteinB])
 
-    x_feat1_2,x_feat2=makePPIdata(in_network_list,df_drug_list,G_targets_in_net)
+    # generate graph containing both cancer pathway genes and target genes (union of both)
+    target_dict = drugTargets_dict(df_drug_list)
+    target_list = [item for sublist in target_dict.values() for item in sublist]
+    target_in_net=list(set(kegg_nodes+target_list))
+    G_targets_in_net=G.subgraph(target_in_net)
+
+    # Check drugs that has no target genes in the network, essentially they are chemotherapy drugs
+    in_network=[]
+    for key,val in target_dict.items():
+        not_network = True
+        for gene in val:
+            gene=re.sub('[\s\*]','',gene)
+            if gene in G_targets_in_net:
+                not_network = False
+        if not not_network:
+            in_network.append(key)
+
+    x_feat1_2,x_feat2=makePPIdata(in_network,df_drug_list,G_targets_in_net)
     x_combID=pd.concat([x_feat1,x_feat2.drop(x_feat2.index[0])],axis=1)
